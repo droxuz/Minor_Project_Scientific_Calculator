@@ -1,5 +1,5 @@
 import customtkinter
-
+from ArithmeticFunctions import BasicArithmetic
 #Sets base appearance
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -11,7 +11,7 @@ root.geometry("500x400")
 frame = customtkinter.CTkFrame(master=root)
 frame.pack(pady=10, padx=10, fill="both", expand=True)
 root.resizable(False,False)
-
+math = BasicArithmetic()
 #Creates the text box to input values
 entry = customtkinter.CTkEntry(frame, placeholder_text='', width=460, height=50, font=("Roboto",26))
 entry.place(x=10, y=10)
@@ -36,6 +36,23 @@ def addition_button():
     box_content = entry.get()
     if box_content and box_content[-1].isdigit():
         entry.insert(customtkinter.END,chr(43))
+
+def equal_button():
+    box_content = entry.get()
+    operators = [chr(247),chr(215),chr(43),"−"]
+    for operators in operators:
+        if operators in box_content:
+            for i, char in enumerate(box_content):
+                if char == operators:
+                    left_number = box_content[:i]
+                    right_number = box_content[i+1:]
+                    print(left_number)
+                    print(right_number)
+                    if char == chr(43):
+                        ans = math.addition(int(left_number),int(right_number))
+                        print(ans)
+                    return
+    print(box_content)
 
 def one_button():
     entry.insert(customtkinter.END,"1")
@@ -100,4 +117,6 @@ OpenBracket_Button = customtkinter.CTkButton(frame, text='(', command=openbracke
 OpenBracket_Button.place(x=115.66, y=210)
 CloseBracket_Button = customtkinter.CTkButton(frame, text=')', command=closebracket_button, width=106.66, height=50, font=('Roboto',28))
 CloseBracket_Button.place(x=222.32, y=210)
+Equals_Button = customtkinter.CTkButton(frame, command=equal_button, text='=', width=140, height=50, font=('Robobto', 28))
+Equals_Button.place(x=330, y=260)
 root.mainloop()
