@@ -47,9 +47,18 @@ def equal_button():
                     left_number = box_content[:i]
                     right_number = box_content[i+1:]
                     print(left_number)
-                    print(right_number)
+                    print(right_number)    
                     if char == chr(43):
                         ans = math.addition(int(left_number),int(right_number))
+                        print(ans)
+                    elif char == chr(215):
+                        ans = math.multiplication(int(left_number), int(right_number))
+                        print(ans)
+                    elif char == chr(247):
+                        ans = math.division(int(left_number),int(right_number))
+                        print(ans)
+                    elif char == "−":
+                        ans = math.subtraction(int(left_number),int(right_number))
                         print(ans)
                     return
     print(box_content)
@@ -78,7 +87,8 @@ def openbracket_button():
     entry.insert(customtkinter.END,"(")
 def closebracket_button():
     entry.insert(customtkinter.END,")")
-
+def clear_button():
+    entry.delete(0,customtkinter.END)
 #Creates UI Buttons
 Division_Button = customtkinter.CTkButton(frame, command=division_func,text=chr(247), width=140, height=50, font=("Roboto", 26))
 Division_Button.place(x=330, y=60)
@@ -119,4 +129,6 @@ CloseBracket_Button = customtkinter.CTkButton(frame, text=')', command=closebrac
 CloseBracket_Button.place(x=222.32, y=210)
 Equals_Button = customtkinter.CTkButton(frame, command=equal_button, text='=', width=140, height=50, font=('Robobto', 28))
 Equals_Button.place(x=330, y=260)
+Clear_Button = customtkinter.CTkButton(frame, command=clear_button, text='Clear', width=140, height=50, font=('Roboto',28))
+Clear_Button.place(x=330, y=310)
 root.mainloop()
