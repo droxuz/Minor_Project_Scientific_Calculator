@@ -1,3 +1,5 @@
+import operator
+import re
 class BasicArithmetic:
 
     def addition(self, num1, num2):
@@ -18,3 +20,10 @@ class BasicArithmetic:
         quotient = num1 / num2
         return quotient
     
+    def calculate(expression):
+        try:
+            result = eval(expression)
+            return result
+        except Exception as e:
+            return f"Error: {e}"
+

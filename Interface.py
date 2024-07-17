@@ -1,4 +1,5 @@
 import customtkinter
+import re
 from ArithmeticFunctions import BasicArithmetic
 #Sets base appearance
 customtkinter.set_appearance_mode("dark")
@@ -19,49 +20,38 @@ entry.place(x=10, y=10)
 #Creates the function for buttons
 def division_func():
     box_content = entry.get()
-    if box_content and box_content[-1].isdigit():
+    if box_content and box_content[-1].isdigit() or box_content[-1] == ')':
         entry.insert(customtkinter.END,chr(247))
 
 def multiplication_button():
     box_content = entry.get()
-    if box_content and box_content[-1].isdigit():
+    if box_content and box_content[-1].isdigit() or box_content[-1] == ')':
         entry.insert(customtkinter.END,chr(215))
 
 def subtraction_button():
     box_content = entry.get()
-    if box_content and box_content[-1].isdigit():
+    if box_content and box_content[-1].isdigit() or box_content[-1] == ')':
         entry.insert(customtkinter.END,"−")
 
 def addition_button():
     box_content = entry.get()
-    if box_content and box_content[-1].isdigit():
+    if box_content and box_content[-1].isdigit() or box_content[-1] == ')':
         entry.insert(customtkinter.END,chr(43))
 
 def equal_button():
     box_content = entry.get()
-    operators = [chr(247),chr(215),chr(43),"−"]
-    for operators in operators:
-        if operators in box_content:
-            for i, char in enumerate(box_content):
-                if char == operators:
-                    left_number = box_content[:i]
-                    right_number = box_content[i+1:]
-                    print(left_number)
-                    print(right_number)    
-                    if char == chr(43):
-                        ans = math.addition(int(left_number),int(right_number))
-                        print(ans)
-                    elif char == chr(215):
-                        ans = math.multiplication(int(left_number), int(right_number))
-                        print(ans)
-                    elif char == chr(247):
-                        ans = math.division(int(left_number),int(right_number))
-                        print(ans)
-                    elif char == "−":
-                        ans = math.subtraction(int(left_number),int(right_number))
-                        print(ans)
-                    return
     print(box_content)
+    box_content = box_content.replace(chr(247), '/')
+    box_content = box_content.replace(chr(215), '*')
+    box_content = box_content.replace("−", '-')
+    print(box_content)
+    if not re.match(r'^[0-9\+\-\*/\(\)\s]+$', box_content):
+        print('Syntax Error: Invalid characters in expression')
+        return
+    result = BasicArithmetic.calculate(box_content)
+    #print(f"Result: {result}")
+    entry.delete(0,customtkinter.END)
+    entry.insert(0,result)    
 
 def one_button():
     entry.insert(customtkinter.END,"1")
