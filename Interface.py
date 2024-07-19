@@ -1,6 +1,6 @@
 import customtkinter
 import re
-from ArithmeticFunctions import BasicArithmetic
+import ArithmeticFunctions
 #Sets base appearance
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -12,7 +12,7 @@ root.geometry("500x400")
 frame = customtkinter.CTkFrame(master=root)
 frame.pack(pady=10, padx=10, fill="both", expand=True)
 root.resizable(False,False)
-math = BasicArithmetic()
+#math = BasicArithmetic()
 #Creates the text box to input values
 entry = customtkinter.CTkEntry(frame, placeholder_text='', width=460, height=50, font=("Roboto",26))
 entry.place(x=10, y=10)
@@ -48,8 +48,8 @@ def equal_button():
     if not re.match(r'^[0-9\+\-\*/\(\)\s]+$', box_content):
         print('Syntax Error: Invalid characters in expression')
         return
-    result = BasicArithmetic.calculate(box_content)
-    #print(f"Result: {result}")
+    result = ArithmeticFunctions.evaluate_expression(box_content)
+    print(f"Result: {result}")
     entry.delete(0,customtkinter.END)
     entry.insert(0,result)    
 

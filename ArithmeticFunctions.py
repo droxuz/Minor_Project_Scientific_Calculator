@@ -1,29 +1,70 @@
 import operator
 import re
-class BasicArithmetic:
-
-    def addition(self, num1, num2):
-        sum= num1 + num2
-        return sum
     
-    def subtraction(self, num1, num2):
-        difference = num1 - num2
-        return difference
+   
+def parse_expression(expression):
+    tokens = re.findall(r'\d+\.?\d*|[+*/()-]', expression)
+    return tokens
+        
+def brackets(tokens):
+    stack=[]
+    for token in tokens:
+        if token == ')':
+            sub_expression = []
+            while stack and stack[-1] != '(':
+                sub_expression.append(stack.pop())
+            stack.pop()
+            stack.append(str(evaluate_expression(sub_expression[::-1])))
+        else:
+            stack.append(token)
+    return stack
+        
+def multiplication_division(tokens):
+    i = 0
+    while i < len(tokens):
+        if tokens[i] in ('*','/'):
+            left = float(tokens[i-1])
+            right = float(tokens[i+1])
+            if tokens[i]=='*':
+                result = left * right
+            else: 
+                result = left / right
+            tokens = tokens[:i-1] + [str(result)] + tokens[i+2:]
+        else:
+            i += 1
+    return tokens
+        
+def addition_subtraction(tokens):
+    i = 0 
+    while i < len(tokens):
+        if tokens[i] in ('+','-'):
+            left = float(tokens[i-1])
+            right = float(tokens[i+1])
+            if tokens[i]== '+':
+                result = left + right
+            else:
+                result = left - right
+            tokens = tokens[:i-1]+[str(result)]+tokens[i+2:]
+        else:
+            i+=1
+    return tokens  
+        
+def evaluate_expression(expression):
+    # Tokenize the expression
+    if isinstance(expression, str):
+        tokens = parse_expression(expression)
+    else:
+        tokens = expression
     
-    def multiplication(self, num1, num2):
-        product = num1 * num2
-        return product
+    # Handle brackets
+    tokens = brackets(tokens)
     
-    def division(self, num1, num2):
-        if num2 == 0:
-            raise ValueError("Cannot Divide by Zero. ")
-        quotient = num1 / num2
-        return quotient
+    # Handle multiplication and division
+    tokens = multiplication_division(tokens)
     
-    def calculate(expression):
-        try:
-            result = eval(expression)
-            return result
-        except Exception as e:
-            return f"Error: {e}"
+    # Handle addition and subtraction
+    tokens = addition_subtraction(tokens)
+    
+    # The final result should be the only token left
+    return float(tokens[0])      
 
