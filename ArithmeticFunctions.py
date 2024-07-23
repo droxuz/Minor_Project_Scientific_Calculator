@@ -1,7 +1,6 @@
 import operator
 import re
-    
-   
+#Helper Functions to evaluate simple equations 
 def parse_expression(expression):
     tokens = re.findall(r'\d+\.?\d*|[+*/()-]', expression)
     return tokens
