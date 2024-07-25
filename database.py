@@ -13,17 +13,26 @@ def create_database():
     except Exception as error:
         print(f"Error: {error}")
     cur = connection.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS person 
+    cur.execute('''CREATE TABLE IF NOT EXISTS person
                 (
-                id INT PRIMARY KEY,
-                equation VARCHAR(255)
-                )
+                equation VARCHAR(100)
+                );
                 ''')
-    cur.execute(""" INSERT INTO person (id ,equation) VALUES
-                (1, '(2+2)/3'),
-                (2, '(2+2)/3'),
-                (3, '(2+2)/3'),
-                (4, '(2+2)/3');
-                """)
     connection.commit()
+    cur.close()
+    return connection
+    
+def insert_data(connection, equation):
+    try:
+        cursor = connection.cursor()
+        insert_data_query = '''INSERT INTO person (equation) VALUES (%s)'''
+        cursor.execute(insert_data_query, (equation,))  # Correctly pass the equation parameter as a tuple
+        connection.commit()
+    except Exception as error:
+        print(f"Error: {error}")
+    finally:
+        cursor.close()
+    
+
+    
 

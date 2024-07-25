@@ -8,7 +8,7 @@ customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 
 #Creates connection to database
-database.create_database()
+db = database.create_database()
 
 #Creates root
 #Adds frame to root 
@@ -49,17 +49,17 @@ def equal_button():
     box_content = box_content.replace(chr(247), '/')
     box_content = box_content.replace(chr(215), '*')
     box_content = box_content.replace("−", '-')
+    print(type(box_content))
     print(box_content)
-
     if not re.match(r'^[0-9\+\-\*/\(\)\s]+$', box_content):
         print('Syntax Error: Invalid characters in expression')
         return
     
     result = ArithmeticFunctions.evaluate_expression(box_content)
     print(f"Result: {result}")
-    
     entry.delete(0,customtkinter.END)
     entry.insert(0,result)    
+    database.insert_data(db, box_content)
 
 def one_button():
     entry.insert(customtkinter.END,"1")
