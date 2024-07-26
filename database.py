@@ -32,6 +32,17 @@ def insert_data(connection, equation):
         print(f"Error: {error}")
     finally:
         cursor.close()
+
+def fetch_data(connection):
+    try: 
+        cursor = connection.cursor()
+        cursor.execute('''SELECT * FROM person LIMIT 10''')
+        data = cursor.fetchall()
+        return data
+    except Exception as error:
+        print(f"Error: {error}")
+    finally:
+        cursor.close()
     
 
     

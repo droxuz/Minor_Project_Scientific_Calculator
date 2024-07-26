@@ -42,6 +42,13 @@ def addition_button():
     box_content = entry.get()
     if box_content and box_content[-1].isdigit() or box_content[-1] == ')':
         entry.insert(customtkinter.END,chr(43))
+    
+def updating_history(database_data):
+    for widget in scrollable_frame.winfo_children():
+        widget.destroy()
+    for i in database_data:
+        history_button = customtkinter.CTkButton(scrollable_frame, text=i, width=140, height=28, font=('Roboto',28), fg_color=('transparent'))
+        history_button.pack(padx=5, pady=5)
 
 def equal_button():
     box_content = entry.get()
@@ -49,18 +56,19 @@ def equal_button():
     box_content = box_content.replace(chr(247), '/')
     box_content = box_content.replace(chr(215), '*')
     box_content = box_content.replace("−", '-')
-    print(type(box_content))
-    print(box_content)
     if not re.match(r'^[0-9\+\-\*/\(\)\s]+$', box_content):
         print('Syntax Error: Invalid characters in expression')
         return
-    
     result = ArithmeticFunctions.evaluate_expression(box_content)
     print(f"Result: {result}")
     entry.delete(0,customtkinter.END)
     entry.insert(0,result)    
     database.insert_data(db, box_content)
-
+    database_data = database.fetch_data(db)
+    print(database_data)
+    updating_history(database_data)
+    
+    
 def one_button():
     entry.insert(customtkinter.END,"1")
 def two_button():
@@ -147,8 +155,5 @@ scrollable_frame = customtkinter.CTkScrollableFrame(frame, width=297, height=20)
 scrollable_frame.place(x=10, y=261)
 
 #Example for showing history of equations
-for i in range(20):
-    history_button = customtkinter.CTkButton(scrollable_frame, text='(2+2)/3', width=140, height=28, font=('Roboto',28), fg_color=('transparent'))
-    history_button.pack(padx=5, pady=5)
 
 root.mainloop()
