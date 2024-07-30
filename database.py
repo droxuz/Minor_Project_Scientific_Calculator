@@ -13,7 +13,7 @@ def create_database():
     except Exception as error:
         print(f"Error: {error}")
     cur = connection.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS person
+    cur.execute('''CREATE TABLE IF NOT EXISTS history
                 (
                 equation VARCHAR(100)
                 );
@@ -25,7 +25,7 @@ def create_database():
 def insert_data(connection, equation):
     try:
         cursor = connection.cursor()
-        insert_data_query = '''INSERT INTO person (equation) VALUES (%s)'''
+        insert_data_query = '''INSERT INTO history (equation) VALUES (%s)'''
         cursor.execute(insert_data_query, (equation,))  # Correctly pass the equation parameter as a tuple
         connection.commit()
     except Exception as error:
@@ -36,7 +36,7 @@ def insert_data(connection, equation):
 def fetch_data(connection):
     try: 
         cursor = connection.cursor()
-        cursor.execute('''SELECT * FROM person LIMIT 10''')
+        cursor.execute('''SELECT * FROM history LIMIT 20''')
         data = cursor.fetchall()
         return data
     except Exception as error:
